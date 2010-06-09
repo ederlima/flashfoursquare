@@ -8,6 +8,7 @@ package br.ederlima.FlashFoursquare.data
 	{
 		private var _oauth_token:String;
 		private var _oauth_token_secret:String;
+		private var _oauth_token_message:String;
 		
 		public function AuthorizationToken() 
 		{
@@ -34,6 +35,17 @@ package br.ederlima.FlashFoursquare.data
 		public function set token(value:String):void
 		{
 			_oauth_token = value;
+		}
+		/**
+		 * Success and Error messages
+		 */
+		public function get tokenMessage():String
+		{
+			return _oauth_token_message;
+		}
+		public function set tokenMessage(value:String):void
+		{
+			
 		}
 		
 		

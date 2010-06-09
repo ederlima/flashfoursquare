@@ -3,7 +3,6 @@ package br.ederlima.FlashFoursquare.core
 	import br.ederlima.FlashFoursquare.data.AuthorizationData;
 	import br.ederlima.FlashFoursquare.data.AuthorizationToken;
 	import br.ederlima.FlashFoursquare.events.AuthorizationEvent;
-	import com.yahoo.oauth.OAuthUtil;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import org.iotashan.oauth.*;
@@ -50,11 +49,13 @@ package br.ederlima.FlashFoursquare.core
 		{
 			_authToken.token = XML(event.target.data).oauth_token;
 			_authToken.tokenSecret = XML(event.target.data).oauth_token_secret;
+			_authToken.tokenMessage = "Autorization Success";
 			dispatchEvent(new AuthorizationEvent(AuthorizationEvent.TOKEN_RECEIVED, _authToken));
 		}
 		private function onAuthError(event:IOErrorEvent):void
 		{
-			
+			_authToken.tokenMessage = "Autorization Failed";
+			dispatchEvent(new AuthorizationEvent(AuthorizationEvent.TOKEN_ERROR, _authToken));
 		}
 		/**
 		 * The Foursquare base api url (http://api.foursquare.com/v1);
@@ -66,6 +67,13 @@ package br.ederlima.FlashFoursquare.core
 		public function set baseURL(value:String):void
 		{
 			_baseURL = value;
+		}
+		/**
+		 * Returns the AuthorizationToken Object
+		 */
+		public function get token():AuthorizationToken
+		{
+			return _authToken;
 		}
 	}
 
