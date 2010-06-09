@@ -27,7 +27,7 @@ package br.ederlima.FlashFoursquare.core
 		private var _authToken:TokenData = new TokenData();
 		private var _baseURL:String = "http://api.foursquare.com/v1";
 		
-		private static var _authorized:Boolean = false;
+		private var _authorized:Boolean = false;
 		private static var instance:AuthorizationManager;
 		private static var allowInstantiation:Boolean;
 		
@@ -62,7 +62,7 @@ package br.ederlima.FlashFoursquare.core
 			_loader.addEventListener(Event.COMPLETE, onAuthComplete);
 			_loader.addEventListener(IOErrorEvent.IO_ERROR, onAuthError);
 			_loader.load(new URLRequest(_requester.buildRequest(_signMethod, OAuthRequest.RESULT_TYPE_URL_STRING)));
-			trace("Getting token...");
+			trace("AuthorizationManager: Getting token...");
 		}
 		private function onAuthComplete(event:Event):void
 		{
@@ -71,13 +71,14 @@ package br.ederlima.FlashFoursquare.core
 			_authToken.tokenMessage = "Autorization Success";
 			dispatchEvent(new AuthorizationEvent(AuthorizationEvent.TOKEN_RECEIVED, _authToken));
 			_authorized = true;
-			trace("Token received...");
+			trace("AuthorizationManager: AuthorizationManager.isAuthorized > " ,_authorized.toString());
+			trace("AuthorizationManager: Token received...");
 		}
 		private function onAuthError(event:IOErrorEvent):void
 		{
 			_authToken.tokenMessage = "Autorization Failed";
 			dispatchEvent(new AuthorizationEvent(AuthorizationEvent.TOKEN_ERROR, _authToken));
-			trace("Error on getAuthToken");
+			trace("AuthorizationManager: Error on getAuthToken");
 		}
 		/**
 		 * The Foursquare base api url (http://api.foursquare.com/v1);
@@ -100,7 +101,7 @@ package br.ederlima.FlashFoursquare.core
 		/**
 		 * True if the token and token secret is avaiable
 		 */
-		public function get AUTHORIZED():Boolean
+		public function get isAuthorized():Boolean
 		{
 			return _authorized;
 		}

@@ -15,13 +15,13 @@ package br.ederlima.FlashFoursquare
 	 */
 	public class FlashFoursquare extends EventDispatcher
 	{
-		private var _authmanager:AuthorizationManager;
 		private var _authData:AuthorizationData;
 		private var _token:TokenData = new TokenData();
 		private var _baseURL:String = "http://api.foursquare.com/v1"
 		private var _queryManager:QueryManager = new QueryManager();
 		private var _queryString:String = "";
 		private var _queryParams:Object = new Object();
+		private var _authmanager:AuthorizationManager;
 		
 		public function FlashFoursquare() 
 		{
@@ -37,6 +37,7 @@ package br.ederlima.FlashFoursquare
 		public function authorize():void
 		{
 			_authmanager = AuthorizationManager.getInstance();
+			trace("FlashFoursquare: AuthorizationManager.isAuthorized > ", _authmanager.isAuthorized.toString());
 			if (_authData != null)
 			{
 				_authmanager.baseURL = _baseURL;
@@ -55,14 +56,6 @@ package br.ederlima.FlashFoursquare
 		 */
 		public function getFriends(uid:int = 0):void
 		{
-			if (_authmanager.AUTHORIZED)
-			{
-			
-			}
-			else
-			{
-				handleAuthError();
-			}
 			_queryString = _baseURL + "/friends";
 			uid == 0 ? _queryParams = null : _queryParams.uid = uid;
 			_queryManager.runQuery(_queryString, QueryMethod.GET, _queryParams );
@@ -76,6 +69,7 @@ package br.ederlima.FlashFoursquare
 			_queryManager.authData = _authData;
 			_queryManager.token = _token;
 			dispatchEvent(new FlashFoursquareEvent(FlashFoursquareEvent.AUTHORIZATION_SUCCESS));
+			trace("FlashFoursquare: AuthorizationManager.isAuthorized > ", _authmanager.isAuthorized.toString());
 		}
 		private function onAuthTokenError(event:AuthorizationEvent):void
 		{
