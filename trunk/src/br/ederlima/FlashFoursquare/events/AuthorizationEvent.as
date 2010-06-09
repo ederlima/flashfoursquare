@@ -27,6 +27,10 @@ package br.ederlima.FlashFoursquare.events
 		{ 
 			return formatToString("AuthorizationEvent", "AuthorizationToken" ,"type", "bubbles", "cancelable", "eventPhase"); 
 		}
+		public function get token():AuthorizationToken
+		{
+			return _token;
+		}
 		
 	}
 	

@@ -10,10 +10,19 @@ package br.ederlima.FlashFoursquare.data
 		private var _consumer_secret:String;
 		private var _user_name:String;
 		private var _user_password:String;
-		
-		public function AuthorizationData() 
+		/**
+		 * Create an object AuthorizationData that holds user and application information
+		 * @param	username
+		 * @param	password
+		 * @param	consumerKey
+		 * @param	consumerSecret
+		 */
+		public function AuthorizationData(username:String, password:String, consumerKey:String, consumerSecret:String) 
 		{
-			
+			_user_name = username;
+			_user_password = password;
+			_consumer_key = consumerKey;
+			_consumer_secret = consumerSecret;
 		}
 		/**
 		 * Consumer key of application
