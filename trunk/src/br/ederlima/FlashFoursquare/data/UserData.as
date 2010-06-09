@@ -6,7 +6,7 @@ package br.ederlima.FlashFoursquare.data
 	 */
 	public class UserData
 	{
-		private var _id:String;
+		private var _id:int;
 		private var _firstname:String;
 		private var _lastname:String;
 		private var _photo:String;
@@ -23,9 +23,9 @@ package br.ederlima.FlashFoursquare.data
 		/**
 		 * The user ID
 		 */
-		public function get id():String { return _id; }
+		public function get id():int { return _id; }
 		
-		public function set id(value:String):void 
+		public function set id(value:int):void 
 		{
 			_id = value;
 		}
