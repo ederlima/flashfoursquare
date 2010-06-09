@@ -17,7 +17,7 @@ package br.ederlima.FlashFoursquare.data
 		 * @param	consumerKey
 		 * @param	consumerSecret
 		 */
-		public function AuthorizationData(username:String, password:String, consumerKey:String, consumerSecret:String) 
+		public function AuthorizationData(username:String = "", password:String = "", consumerKey:String = "", consumerSecret:String = "") 
 		{
 			_user_name = username;
 			_user_password = password;

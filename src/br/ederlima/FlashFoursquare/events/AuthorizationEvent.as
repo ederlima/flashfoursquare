@@ -1,6 +1,6 @@
 package br.ederlima.FlashFoursquare.events 
 {
-	import br.ederlima.FlashFoursquare.data.AuthorizationToken;
+	import br.ederlima.FlashFoursquare.data.TokenData;
 	import flash.events.Event;
 	
 	/**
@@ -11,8 +11,8 @@ package br.ederlima.FlashFoursquare.events
 	{
 		public static const TOKEN_RECEIVED:String = "authTokenReceived";
 		public static const TOKEN_ERROR:String = "authTokenError";
-		private var _token:AuthorizationToken = new AuthorizationToken();
-		public function AuthorizationEvent(type:String, token:AuthorizationToken = null, bubbles:Boolean=false, cancelable:Boolean=false) 
+		private var _token:TokenData = new TokenData();
+		public function AuthorizationEvent(type:String, token:TokenData = null, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
 			_token = token;
 			super(type, bubbles, cancelable);
@@ -25,9 +25,9 @@ package br.ederlima.FlashFoursquare.events
 		
 		public override function toString():String 
 		{ 
-			return formatToString("AuthorizationEvent", "AuthorizationToken" ,"type", "bubbles", "cancelable", "eventPhase"); 
+			return formatToString("AuthorizationEvent", "TokenData" ,"type", "bubbles", "cancelable", "eventPhase"); 
 		}
-		public function get token():AuthorizationToken
+		public function get token():TokenData
 		{
 			return _token;
 		}

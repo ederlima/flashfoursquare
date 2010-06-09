@@ -4,13 +4,13 @@ package br.ederlima.FlashFoursquare.data
 	 * ...
 	 * @author Eder Lima
 	 */
-	public class AuthorizationToken
+	public class TokenData
 	{
 		private var _oauth_token:String;
 		private var _oauth_token_secret:String;
 		private var _oauth_token_message:String;
 		
-		public function AuthorizationToken() 
+		public function TokenData() 
 		{
 			
 		}
