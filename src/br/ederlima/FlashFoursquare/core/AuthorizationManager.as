@@ -26,6 +26,8 @@ package br.ederlima.FlashFoursquare.core
 		private var _authToken:AuthorizationToken = new AuthorizationToken();
 		private var _baseURL:String = "http://api.foursquare.com/v1";
 		
+		private static var _authorized:Boolean = false;
+		
 		public function AuthorizationManager() 
 		{
 			
@@ -51,6 +53,7 @@ package br.ederlima.FlashFoursquare.core
 			_authToken.tokenSecret = XML(event.target.data).oauth_token_secret;
 			_authToken.tokenMessage = "Autorization Success";
 			dispatchEvent(new AuthorizationEvent(AuthorizationEvent.TOKEN_RECEIVED, _authToken));
+			_authorized = true;
 		}
 		private function onAuthError(event:IOErrorEvent):void
 		{
@@ -74,6 +77,13 @@ package br.ederlima.FlashFoursquare.core
 		public function get token():AuthorizationToken
 		{
 			return _authToken;
+		}
+		/**
+		 * True if the token and token secret is avaiable
+		 */
+		public function get authorized():Boolean
+		{
+			return _authorized;
 		}
 	}
 
