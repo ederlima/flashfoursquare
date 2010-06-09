@@ -1,6 +1,7 @@
 package br.ederlima.FlashFoursquare.core 
 {
 	import br.ederlima.FlashFoursquare.data.AuthorizationData;
+	import br.ederlima.FlashFoursquare.core.AuthorizationManager;
 	import br.ederlima.FlashFoursquare.data.TokenData;
 	import br.ederlima.FlashFoursquare.data.QueryMethod;
 	import flash.events.Event;
@@ -16,9 +17,9 @@ package br.ederlima.FlashFoursquare.core
 	 */
 	public class QueryManager extends EventDispatcher
 	{
+		private var _authManager:AuthorizationManager;
 		private var _consumer:OAuthConsumer = new OAuthConsumer();
 		private var _requester:OAuthRequest;
-		private var _requestertoken:OAuthToken = new OAuthToken();
 		private var _signMethod:OAuthSignatureMethod_HMAC_SHA1 = new OAuthSignatureMethod_HMAC_SHA1();
 		private var _queryRequestString:String = "";
 		private var _queryRequest:URLRequest;
@@ -36,26 +37,28 @@ package br.ederlima.FlashFoursquare.core
 		}
 		public function runQuery(url:String, method:String, params:Object = null):void
 		{
+			_authManager = AuthorizationManager.getInstance();
+			trace("QueryManager:", "AuthorizationManager.isAuthorized: ", _authManager.isAuthorized.toString());
+			if (_authManager.isAuthorized == true)
+			{
 			_consumer.key = _authData.key;
 			_consumer.secret = _authData.secret;
 			_requester = new OAuthRequest(method, url, params, _consumer);
-			_requestertoken.key = _token.token;
-			_requestertoken.secret = _token.tokenSecret;
-			_requester.token = _requestertoken;
+			_requester.token = new OAuthToken(_token.token, _token.tokenSecret);
 			_queryRequest = new URLRequest(_requester.buildRequest(_signMethod, OAuthRequest.RESULT_TYPE_URL_STRING));
 			_queryLoader.addEventListener(Event.COMPLETE, queryCompleteHandler);
 			_queryLoader.addEventListener(IOErrorEvent.IO_ERROR, queryIOErrorHandler);
 			_queryLoader.load(_queryRequest);
+			}
 		}
 		private function queryCompleteHandler(event:Event):void
 		{
-			trace("ok");
+			trace("QueryManager: Query Success");
 			trace(event.target.data);
-			//trace("Token: [key: " + this.token.token +", Secret: " + this.token.tokenSecret);
 		}
 		private function queryIOErrorHandler(event:IOErrorEvent):void
 		{
-			trace("error");
+			trace("QueryManager: Query Error");
 		}
 		/**
 		 * AuthorizationData Object: Contains the user's data (username and password) and application data (key and secret)
@@ -74,7 +77,7 @@ package br.ederlima.FlashFoursquare.core
 		public function set token(value:TokenData):void 
 		{
 			_token = value;
-			trace("Query: ", _token.token, _token.tokenSecret);
+			trace("Query Manager: ", _token.token, _token.tokenSecret);
 		}
 	}
 
