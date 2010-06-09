@@ -11,7 +11,7 @@ package br.ederlima.FlashFoursquare.data
 		private var _lastname:String;
 		private var _photo:String;
 		private var _gender:String;
-		private var _phone:String;
+		private var _phone:int;
 		private var _email:String;
 		private var _twitter:String;
 		private var _facebook:String;
@@ -68,9 +68,9 @@ package br.ederlima.FlashFoursquare.data
 		/**
 		 * The user phone Number
 		 */
-		public function get phone():String { return _phone; }
+		public function get phone():int { return _phone; }
 		
-		public function set phone(value:String):void 
+		public function set phone(value:int):void 
 		{
 			_phone = value;
 		}
