@@ -2,6 +2,7 @@ package br.ederlima.FlashFoursquare.core
 {
 	import br.ederlima.FlashFoursquare.data.AuthorizationData;
 	import br.ederlima.FlashFoursquare.data.TokenData;
+	import br.ederlima.FlashFoursquare.data.QueryMethod;
 	import br.ederlima.FlashFoursquare.events.AuthorizationEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -26,6 +27,7 @@ package br.ederlima.FlashFoursquare.core
 		private var _authxml:XML = new XML();
 		private var _authToken:TokenData = new TokenData();
 		private var _baseURL:String = "http://api.foursquare.com/v1";
+		private var _queryManager:QueryManager = new QueryManager();
 		
 		private var _authorized:Boolean = false;
 		private static var instance:AuthorizationManager;
@@ -63,6 +65,8 @@ package br.ederlima.FlashFoursquare.core
 			_loader.addEventListener(IOErrorEvent.IO_ERROR, onAuthError);
 			_loader.load(new URLRequest(_requester.buildRequest(_signMethod, OAuthRequest.RESULT_TYPE_URL_STRING)));
 			trace("AuthorizationManager: Getting token...");
+			
+			_queryManager.runQuery(_baseURL + "/authexchange", QueryMethod.GET, { fs_username:_authData.username, fs_password:_authData.password } );
 		}
 		private function onAuthComplete(event:Event):void
 		{
