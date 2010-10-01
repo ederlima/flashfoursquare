@@ -73,8 +73,8 @@ package br.ederlima.FlashFoursquare.core
 			_authToken.token = XML(event.target.data).oauth_token;
 			_authToken.tokenSecret = XML(event.target.data).oauth_token_secret;
 			_authToken.tokenMessage = "Autorization Success";
-			dispatchEvent(new AuthorizationEvent(AuthorizationEvent.TOKEN_RECEIVED, _authToken));
 			_authorized = true;
+			dispatchEvent(new AuthorizationEvent(AuthorizationEvent.TOKEN_RECEIVED, _authToken));
 			trace("AuthorizationManager: AuthorizationManager.isAuthorized > " ,_authorized.toString());
 			trace("AuthorizationManager: Token received...");
 		}
