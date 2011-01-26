@@ -38,7 +38,6 @@ package br.ederlima.FlashFoursquare.core
 		public function runQuery(url:String, method:String, params:Object = null):void
 		{
 			_authManager = AuthorizationManager.getInstance();
-			trace("QueryManager:", "AuthorizationManager.isAuthorized: ", _authManager.isAuthorized.toString());
 			if (_authManager.isAuthorized == true)
 			{
 			_consumer.key = _authData.key;
@@ -53,12 +52,11 @@ package br.ederlima.FlashFoursquare.core
 		}
 		private function queryCompleteHandler(event:Event):void
 		{
-			trace("QueryManager: Query Success");
 			trace(event.target.data);
 		}
 		private function queryIOErrorHandler(event:IOErrorEvent):void
 		{
-			trace("QueryManager: Query Error");
+			trace("QueryManager: Query Error" + "[ " + event.text + " ]");
 		}
 		/**
 		 * AuthorizationData Object: Contains the user's data (username and password) and application data (key and secret)
@@ -77,7 +75,6 @@ package br.ederlima.FlashFoursquare.core
 		public function set token(value:TokenData):void 
 		{
 			_token = value;
-			trace("Query Manager: ", _token.token, _token.tokenSecret);
 		}
 	}
 

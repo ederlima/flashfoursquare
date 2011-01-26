@@ -37,7 +37,6 @@ package br.ederlima.FlashFoursquare
 		public function authorize():void
 		{
 			_authmanager = AuthorizationManager.getInstance();
-			trace("FlashFoursquare: AuthorizationManager.isAuthorized > ", _authmanager.isAuthorized.toString());
 			if (_authData != null)
 			{
 				_authmanager.baseURL = _baseURL;
@@ -65,11 +64,9 @@ package br.ederlima.FlashFoursquare
 			_token.token = event.token.token;
 			_token.tokenSecret = event.token.tokenSecret;
 			_token.tokenMessage = event.token.tokenMessage;
-			trace("Token disparado de FlashFoursquare: " + _token.token, _token.tokenSecret);
 			_queryManager.authData = _authData;
 			_queryManager.token = _token;
 			dispatchEvent(new FlashFoursquareEvent(FlashFoursquareEvent.AUTHORIZATION_SUCCESS));
-			trace("FlashFoursquare: AuthorizationManager.isAuthorized > ", _authmanager.isAuthorized.toString());
 		}
 		private function onAuthTokenError(event:AuthorizationEvent):void
 		{
