@@ -8,9 +8,8 @@ package br.ederlima.FlashFoursquare.events
 	 */
 	public class QueryEvent extends Event 
 	{
-		private static const QUERY_RESPONSE:String = "queryResponse";
-		private static const QUERY_ERROR:String = "queryError";
-		
+		public static const QUERY_RESPONSE:String = "queryResponse";
+		public static const QUERY_ERROR:String = "queryError";
 		
 		private var _data:XML;
 		public function QueryEvent(type:String, data:XML = null, bubbles:Boolean=false, cancelable:Boolean=false) 
@@ -27,6 +26,16 @@ package br.ederlima.FlashFoursquare.events
 		public override function toString():String 
 		{ 
 			return formatToString("QueryEvent", "XMLData","type", "bubbles", "cancelable", "eventPhase"); 
+		}
+		
+		/**
+		 * XML data 
+		 */
+		public function get data():XML { return _data; }
+		
+		public function set data(value:XML):void 
+		{
+			_data = value;
 		}
 		
 	}

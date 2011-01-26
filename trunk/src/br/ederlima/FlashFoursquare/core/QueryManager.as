@@ -4,6 +4,7 @@ package br.ederlima.FlashFoursquare.core
 	import br.ederlima.FlashFoursquare.core.AuthorizationManager;
 	import br.ederlima.FlashFoursquare.data.TokenData;
 	import br.ederlima.FlashFoursquare.data.QueryMethod;
+	import br.ederlima.FlashFoursquare.events.QueryEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
@@ -52,7 +53,7 @@ package br.ederlima.FlashFoursquare.core
 		}
 		private function queryCompleteHandler(event:Event):void
 		{
-			trace(event.target.data);
+			dispatchEvent(new QueryEvent(QueryEvent.QUERY_RESPONSE, XML(event.target.data)));
 		}
 		private function queryIOErrorHandler(event:IOErrorEvent):void
 		{

@@ -10,19 +10,25 @@ package br.ederlima.FlashFoursquare.events
 	{
 		public static const AUTHORIZATION_SUCCESS:String = "authorizationSuccess";
 		public static const AUTHORIZATION_FAIL:String = "authorizationFail";
-		public function FlashFoursquareEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false) 
+		
+		public static const QUERY_RESPONSE:String = "flashfoursquareQueryResponse";
+		public static const QUERY_FAILURE:String = "flashfoursquareQueryFailure";
+		
+		private var _xml:XML = null;
+		public function FlashFoursquareEvent(type:String, xml:XML = null, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
+			_xml = xml;
 			super(type, bubbles, cancelable);
 		} 
 		
 		public override function clone():Event 
 		{ 
-			return new FlashFoursquareEvent(type, bubbles, cancelable);
+			return new FlashFoursquareEvent(type, _xml, bubbles, cancelable);
 		} 
 		
 		public override function toString():String 
 		{ 
-			return formatToString("FlashFoursquareEvent", "type", "bubbles", "cancelable", "eventPhase"); 
+			return formatToString("FlashFoursquareEvent", "type", "XML", "bubbles", "cancelable", "eventPhase"); 
 		}
 		
 	}
