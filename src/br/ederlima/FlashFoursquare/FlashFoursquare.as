@@ -2,6 +2,7 @@ package br.ederlima.FlashFoursquare
 {
 	import br.ederlima.FlashFoursquare.core.AuthorizationManager;
 	import br.ederlima.FlashFoursquare.core.QueryManager;
+	import br.ederlima.FlashFoursquare.events.QueryEvent;
 	import br.ederlima.FlashFoursquare.data.AuthorizationData;
 	import br.ederlima.FlashFoursquare.data.TokenData;
 	import br.ederlima.FlashFoursquare.data.QueryMethod;
@@ -22,6 +23,10 @@ package br.ederlima.FlashFoursquare
 		private var _queryString:String = "";
 		private var _queryParams:Object = new Object();
 		private var _authmanager:AuthorizationManager;
+		
+		//data
+		//friends array
+		private var _users:Array = [];
 		
 		public function FlashFoursquare() 
 		{
@@ -57,7 +62,24 @@ package br.ederlima.FlashFoursquare
 		{
 			_queryString = _baseURL + "/friends";
 			uid == 0 ? _queryParams = null : _queryParams.uid = uid;
+			_queryManager.addEventListener(QueryEvent.QUERY_RESPONSE, queryResponseHandler);
+			_queryManager.addEventListener(QueryEvent.QUERY_ERROR, queryErrorHandler);
 			_queryManager.runQuery(_queryString, QueryMethod.GET, _queryParams );
+		}
+		
+		private function queryErrorHandler(event:QueryEvent):void 
+		{
+			trace("error");
+		}
+		
+		private function queryResponseHandler(event:QueryEvent):void 
+		{
+			parseResponse(event.data);
+		}
+		
+		private function parseResponse(data:XML):void
+		{
+			
 		}
 		private function onAuthTokenReceived(event:AuthorizationEvent):void
 		{
@@ -100,6 +122,15 @@ package br.ederlima.FlashFoursquare
 		 * TokenData Object: Contains OAuth Token and Secret. Only avaiable after AUTHORIZATION_SUCCESS
 		 */
 		public function get token():TokenData { return _token; }
+		/**
+		 * Array with a list of users/friends
+		 */
+		public function get users():Array { return _users; }
+		
+		public function set users(value:Array):void 
+		{
+			_users = value;
+		}
 		/*
 		public function set token(value:TokenData):void 
 		{
