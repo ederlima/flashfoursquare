@@ -11,6 +11,8 @@ package br.ederlima.FlashFoursquare.core
 	import org.iotashan.oauth.*;
 	import flash.events.EventDispatcher;
 	import flash.net.URLRequest;
+	import flash.xml.XMLDocument;
+	import flash.xml.XMLNode;
 	
 	/**
 	 * ...
@@ -53,7 +55,14 @@ package br.ederlima.FlashFoursquare.core
 		}
 		private function queryCompleteHandler(event:Event):void
 		{
-			dispatchEvent(new QueryEvent(QueryEvent.QUERY_RESPONSE, XML(event.target.data)));
+			dispatchEvent(new QueryEvent(QueryEvent.QUERY_RESPONSE, XML(event.target.data), parseResponse(XML(event.target.data))));
+		}
+		private function parseResponse(xml:XML):XMLDocument
+		{
+			var _xmlDocument:XMLDocument = new XMLDocument();
+			_xmlDocument.ignoreWhite = true;
+			_xmlDocument.parseXML(xml);
+			return _xmlDocument;
 		}
 		private function queryIOErrorHandler(event:IOErrorEvent):void
 		{

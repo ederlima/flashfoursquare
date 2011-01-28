@@ -6,6 +6,18 @@ package br.ederlima.FlashFoursquare.data
 	 */
 	public class UserData
 	{
+		/*
+			<id>408136</id>
+			<firstname>80.20</firstname>
+			<lastname>Marketing Digital</lastname>
+			<friendstatus>friend</friendstatus>
+			<homecity>Imperatriz, MA</homecity>
+			<photo>http://playfoursquare.s3.amazonaws.com/userpix_thumbs/LPPOUOBF1D5CG10L.jpg</photo>
+			<gender>none</gender>
+			<phone>556799068845</phone>
+			<email>cadastro@8020mkt.com.br</email>
+			<twitter>8020mkt</twitter>
+		*/
 		private var _id:int;
 		private var _firstname:String;
 		private var _lastname:String;
@@ -14,7 +26,8 @@ package br.ederlima.FlashFoursquare.data
 		private var _phone:int;
 		private var _email:String;
 		private var _twitter:String;
-		private var _facebook:String;
+		private var _homecity:String;
+		private var _status:String;
 		
 		public function UserData() 
 		{
@@ -93,13 +106,22 @@ package br.ederlima.FlashFoursquare.data
 			_twitter = value;
 		}
 		/**
-		 * The user facebook account
+		 * The user's homecity
 		 */
-		public function get facebook():String { return _facebook; }
+		public function get homecity():String { return _homecity; }
 		
-		public function set facebook(value:String):void 
+		public function set homecity(value:String):void 
 		{
-			_facebook = value;
+			_homecity = value;
+		}
+		/**
+		 * The user's friend status (eg: friend)
+		 */
+		public function get status():String { return _status; }
+		
+		public function set status(value:String):void 
+		{
+			_status = value;
 		}
 		
 		
