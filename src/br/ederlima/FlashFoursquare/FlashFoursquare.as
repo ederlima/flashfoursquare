@@ -2,6 +2,7 @@ package br.ederlima.FlashFoursquare
 {
 	import br.ederlima.FlashFoursquare.core.AuthorizationManager;
 	import br.ederlima.FlashFoursquare.core.QueryManager;
+	import br.ederlima.FlashFoursquare.data.UserData;
 	import br.ederlima.FlashFoursquare.events.QueryEvent;
 	import br.ederlima.FlashFoursquare.data.AuthorizationData;
 	import br.ederlima.FlashFoursquare.data.TokenData;
@@ -9,6 +10,7 @@ package br.ederlima.FlashFoursquare
 	import br.ederlima.FlashFoursquare.events.AuthorizationEvent;
 	import br.ederlima.FlashFoursquare.events.FlashFoursquareEvent;
 	import flash.events.EventDispatcher;
+	import flash.xml.XMLDocument;
 	
 	/**
 	 * ...
@@ -26,7 +28,7 @@ package br.ederlima.FlashFoursquare
 		
 		//data
 		//friends array
-		private var _users:Array = [];
+		private var _friendsList:Array = [];
 		
 		public function FlashFoursquare() 
 		{
@@ -62,25 +64,68 @@ package br.ederlima.FlashFoursquare
 		{
 			_queryString = _baseURL + "/friends";
 			uid == 0 ? _queryParams = null : _queryParams.uid = uid;
-			_queryManager.addEventListener(QueryEvent.QUERY_RESPONSE, queryResponseHandler);
-			_queryManager.addEventListener(QueryEvent.QUERY_ERROR, queryErrorHandler);
-			_queryManager.runQuery(_queryString, QueryMethod.GET, _queryParams );
+			setupAndQuery();
+		}
+		/**
+		 * Show details about the current user
+		 * @param	uid The unique ID of the user
+		 */
+		public function userDetails(uid:int):void
+		{
+			_queryString = _baseURL + "/user";
+			_queryParams.uid = uid;
+			setupAndQuery();
+		}
+		private function setupAndQuery():void
+		{
+			addListeners();
+			_queryManager.runQuery(_queryString, QueryMethod.GET, _queryParams);
 		}
 		
 		private function queryErrorHandler(event:QueryEvent):void 
 		{
+			removeListeners();
 			trace("error");
 		}
 		
 		private function queryResponseHandler(event:QueryEvent):void 
 		{
-			parseResponse(event.data);
+			removeListeners();
+			parseResponse(event.data, event.xmlDocument);
 		}
 		
-		private function parseResponse(data:XML):void
+		private function parseResponse(data:XML, xmlDocument:XMLDocument):void
 		{
-			
+			switch(xmlDocument.firstChild.nodeName)
+			{
+				case "friends" : 
+				returnFriends(data);
+				dispatchEvent(new FlashFoursquareEvent(FlashFoursquareEvent.QUERY_RESPONSE, data));
+				break;
+			}
 		}
+		
+		private function returnFriends(data:XML):void
+		{
+			var friendsList:XMLList = new XMLList(data.user);
+			for each(var friend:XML in friendsList)
+			{
+				var user:UserData = new UserData();
+				user.id = friend.id;
+				user.firstname = friend.firstname;
+				user.lastname = friend.lastname;
+				user.homecity = friend.homecity;
+				user.status = friend.friendstatus;
+				user.photo = friend.photo;
+				user.gender = friend.gender;
+				user.phone = friend.phone;
+				user.email = friend.email;
+				user.twitter = friend.twitter;
+				_friendsList.push(user);
+			}
+		}
+		
+		
 		private function onAuthTokenReceived(event:AuthorizationEvent):void
 		{
 			_token.token = event.token.token;
@@ -98,6 +143,16 @@ package br.ederlima.FlashFoursquare
 		private function handleAuthError(message = ""):void
 		{
 			trace("The authorization token is not avaiable.\n "+message);
+		}
+		private function addListeners():void
+		{
+			_queryManager.addEventListener(QueryEvent.QUERY_RESPONSE, queryResponseHandler);
+			_queryManager.addEventListener(QueryEvent.QUERY_ERROR, queryErrorHandler);
+		}
+		private function removeListeners():void
+		{
+			_queryManager.removeEventListener(QueryEvent.QUERY_RESPONSE, queryResponseHandler);
+			_queryManager.removeEventListener(QueryEvent.QUERY_ERROR, queryErrorHandler);
 		}
 		/**
 		 * The Foursquare API base URL (Default: "http://api.foursquare.com/v1");
@@ -123,14 +178,15 @@ package br.ederlima.FlashFoursquare
 		 */
 		public function get token():TokenData { return _token; }
 		/**
-		 * Array with a list of users/friends
+		 * 
 		 */
-		public function get users():Array { return _users; }
+		public function get friendsList():Array { return _friendsList; }
 		
-		public function set users(value:Array):void 
+		public function set friendsList(value:Array):void 
 		{
-			_users = value;
+			_friendsList = value;
 		}
+		
 		/*
 		public function set token(value:TokenData):void 
 		{

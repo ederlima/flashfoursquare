@@ -1,6 +1,7 @@
 package br.ederlima.FlashFoursquare.events 
 {
 	import flash.events.Event;
+	import flash.xml.XMLDocument;
 	
 	/**
 	 * ...
@@ -12,20 +13,22 @@ package br.ederlima.FlashFoursquare.events
 		public static const QUERY_ERROR:String = "queryError";
 		
 		private var _data:XML;
-		public function QueryEvent(type:String, data:XML = null, bubbles:Boolean=false, cancelable:Boolean=false) 
+		private var _xmlDocument:XMLDocument;
+		public function QueryEvent(type:String, data:XML = null, xmlDoc:XMLDocument = null, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
 			_data = data;
+			_xmlDocument = xmlDoc;
 			super(type, bubbles, cancelable);
 		} 
 		
 		public override function clone():Event 
 		{ 
-			return new QueryEvent(type, _data, bubbles, cancelable);
+			return new QueryEvent(type, _data, _xmlDocument, bubbles, cancelable);
 		} 
 		
 		public override function toString():String 
 		{ 
-			return formatToString("QueryEvent", "XMLData","type", "bubbles", "cancelable", "eventPhase"); 
+			return formatToString("QueryEvent", "type","XMLData","XMLDocument", "bubbles", "cancelable", "eventPhase"); 
 		}
 		
 		/**
@@ -36,6 +39,15 @@ package br.ederlima.FlashFoursquare.events
 		public function set data(value:XML):void 
 		{
 			_data = value;
+		}
+		/**
+		 * XML XMLDocument
+		 */
+		public function get xmlDocument():XMLDocument { return _xmlDocument; }
+		
+		public function set xmlDocument(value:XMLDocument):void 
+		{
+			_xmlDocument = value;
 		}
 		
 	}
